@@ -32,4 +32,6 @@
 *.app
 
 /.vs
-*/External Libraries
+**/External Libraries
+/x64
+**/Ray-Trx/x64

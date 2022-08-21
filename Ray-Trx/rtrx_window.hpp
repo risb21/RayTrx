@@ -12,6 +12,8 @@ namespace rtrx {
 			rtrxWindow(int w, int h, std::string n);
 			~rtrxWindow();
 
+			bool shouldClose() { return glfwWindowShouldClose(window); }
+
 		private:
 			void initWindow();
 
@@ -19,6 +21,6 @@ namespace rtrx {
 			const int height;
 
 			std::string windowName;
-			GLFWwindow* window;
+			GLFWwindow *window;
 	};
 }

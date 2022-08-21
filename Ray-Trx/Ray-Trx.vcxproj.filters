@@ -27,5 +27,8 @@
     <ClCompile Include="tracer.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -22,6 +22,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="rtrx_window.cpp" />
     <ClCompile Include="rtrx_window.hpp" />
+    <ClCompile Include="tracer.cpp" />
     <ClCompile Include="tracer.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

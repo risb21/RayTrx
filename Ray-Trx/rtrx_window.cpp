@@ -19,7 +19,7 @@ namespace rtrx{
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 		// ^ Stops resizing of window
 
-		// Window ptr defined in .hpp file of same name
+		// window ptr defined in .hpp file of same name
 		window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
 		// nullptr for windowed mode, name of window needs c style string
 	}
