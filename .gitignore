@@ -33,5 +33,4 @@
 
 /.vs
 **/External Libraries
-/x64
-**/Ray-Trx/x64
+**/x64
