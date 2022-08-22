@@ -12,6 +12,9 @@ namespace rtrx {
 			rtrxWindow(int w, int h, std::string n);
 			~rtrxWindow();
 
+			// rtrxWindow(const rtrxWindow &) = delete;
+			// rtrxWindow &operator=(const rtrxWindow &) = delete;
+
 			bool shouldClose() { return glfwWindowShouldClose(window); }
 
 		private:

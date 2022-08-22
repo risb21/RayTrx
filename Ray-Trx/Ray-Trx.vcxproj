@@ -24,6 +24,7 @@
     <ClCompile Include="rtrx_window.hpp" />
     <ClCompile Include="tracer.cpp" />
     <ClCompile Include="tracer.hpp" />
+    <ClCompile Include="triangle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
