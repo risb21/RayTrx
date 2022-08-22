@@ -22,9 +22,19 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="rtrx_window.cpp" />
     <ClCompile Include="rtrx_window.hpp" />
+    <ClCompile Include="rtx_pipeline.cpp" />
     <ClCompile Include="tracer.cpp" />
     <ClCompile Include="tracer.hpp" />
-    <ClCompile Include="triangle.cpp" />
+    <ClCompile Include="balls.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="balls.hpp" />
+    <ClInclude Include="rtrx_pipeline.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="compile.bat" />
+    <None Include="simple_shader.frag" />
+    <None Include="simple_shader.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
