@@ -61,6 +61,50 @@ namespace rtrx {
 		configInfo.inputAssemblyInfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
 		configInfo.inputAssemblyInfo.primitiveRestartEnable = VK_FALSE;
 
+		// Viewport effects can also squish display
+		configInfo.viewport.x = 0.0f;
+		configInfo.viewport.y = 0.0f;
+		configInfo.viewport.width = static_cast<float>(width);
+		configInfo.viewport.height = static_cast<float>(height);
+		configInfo.viewport.minDepth = 0.0f;
+		configInfo.viewport.maxDepth = 1.0f;
+
+		// Scissor clips off part of the viewport displaying to the window
+		configInfo.scissor.offset = { 0,0 };
+		configInfo.scissor.extent = { width, height };
+
+		// Assigning info on viewport defined before
+		configInfo.viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+		configInfo.viewportInfo.viewportCount = 1;
+		configInfo.viewportInfo.pViewports = &configInfo.viewport;
+		configInfo.viewportInfo.scissorCount = 1;
+		configInfo.viewportInfo.pScissors = &configInfo.scissor;
+
+		// Rasterization stage
+		configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+		configInfo.rasterizationInfo.depthClampEnable = VK_FALSE;
+		configInfo.rasterizationInfo.rasterizerDiscardEnable = VK_FALSE;
+		configInfo.rasterizationInfo.polygonMode = VK_POLYGON_MODE_FILL;
+		configInfo.rasterizationInfo.lineWidth = 1.0f;
+		configInfo.rasterizationInfo.cullMode = VK_CULL_MODE_NONE;
+		configInfo.rasterizationInfo.frontFace = VK_FRONT_FACE_CLOCKWISE;
+		configInfo.rasterizationInfo.depthBiasEnable = VK_FALSE;
+		configInfo.rasterizationInfo.depthBiasConstantFactor = 0.0f;  // Optional
+		configInfo.rasterizationInfo.depthBiasClamp = 0.0f;			  // Optional
+		configInfo.rasterizationInfo.depthBiasSlopeFactor = 0.0f;     // Optional
+
+		// Multisampling for Anti-Aliasing
+		configInfo.multisampleInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+		configInfo.multisampleInfo.sampleShadingEnable = VK_FALSE;
+		configInfo.multisampleInfo.minSampleShading = VK_SAMPLE_COUNT_1_BIT;
+		configInfo.multisampleInfo.minSampleShading = 1.0f;			  //Optional
+		configInfo.multisampleInfo.pSampleMask = nullptr;			  //Optional
+		configInfo.multisampleInfo.alphaToCoverageEnable = VK_FALSE;  //Optional
+		configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;		  //Optional
+
+
+
+
 		return configInfo;
 	}
 }

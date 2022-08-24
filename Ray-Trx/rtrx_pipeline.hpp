@@ -10,7 +10,17 @@ namespace rtrx {
 
 	struct PipelineConfigInfo {
 		VkViewport viewport;
+		VkRect2D scissor;
+		VkPipelineViewportStateCreateInfo viewportInfo;
 		VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
+		VkPipelineRasterizationStateCreateInfo rasterizationInfo;
+		VkPipelineMultisampleStateCreateInfo multisampleInfo;
+		VkPipelineColorBlendAttachmentState colourBlendAttachment;
+		VkPipelineColorBlendStateCreateInfo colourBlendInfo;
+		VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
+		VkPipelineLayout pipelineLayout = nullptr;
+		VkRenderPass renderpass = nullptr;
+		uint32_t subpass = 0;
 	};
 
 	class rtrxPipeline {
