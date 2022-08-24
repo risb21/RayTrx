@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="rtrx_device.cpp" />
     <ClCompile Include="rtrx_window.cpp" />
     <ClCompile Include="rtrx_window.hpp" />
     <ClCompile Include="rtx_pipeline.cpp" />
@@ -29,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balls.hpp" />
+    <ClInclude Include="rtrx_device.hpp" />
     <ClInclude Include="rtrx_pipeline.hpp" />
   </ItemGroup>
   <ItemGroup>

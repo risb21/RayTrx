@@ -1,5 +1,8 @@
 #include "rtrx_window.hpp"
 
+// std
+#include <stdexcept>
+
 namespace rtrx{
 
 	rtrxWindow::rtrxWindow(int w, int h, std::string n) : width{ w }, height{ h }, windowName{ n } {
@@ -22,5 +25,11 @@ namespace rtrx{
 		// window ptr defined in .hpp file of same name
 		window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
 		// nullptr for windowed mode, name of window needs c style string
+	}
+
+	void rtrxWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR* surface) {
+		if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
+			throw std::runtime_error("Failed to create window surface");
+		}
 	}
 }

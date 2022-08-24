@@ -2,6 +2,7 @@
 
 #include "rtrx_window.hpp"
 #include "rtrx_pipeline.hpp"
+#include "rtrx_device.hpp"
 
 namespace rtrx {
 	class Tracer {
@@ -13,6 +14,7 @@ namespace rtrx {
 
 		private:
 			rtrxWindow rtrxWindow{ WIDTH, HEIGHT, "Hello how r u i am under d wotor it is too much raining" };
-			rtrxPipeline rtrxPipeline{ "simple_shader.vert.spv", "simple_shader.frag.spv" };
+			rtrxDevice rtrxDev{ rtrxWindow };
+			rtrxPipeline rtrxPipeline{ rtrxDev, "simple_shader.vert.spv", "simple_shader.frag.spv", rtrxPipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
 	};
 }

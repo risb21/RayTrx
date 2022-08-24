@@ -39,12 +39,18 @@
     <ClCompile Include="rtx_pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rtrx_device.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balls.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="rtrx_pipeline.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rtrx_device.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
