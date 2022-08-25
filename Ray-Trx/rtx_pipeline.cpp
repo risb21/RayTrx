@@ -124,6 +124,10 @@ namespace rtrx {
 		}
 	}
 
+	void rtrxPipeline::bind(VkCommandBuffer commandBuffer) {
+		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+	}
+
 	PipelineConfigInfo rtrxPipeline::defaultPipelineConfigInfo(uint32_t width, uint32_t height) {
 		PipelineConfigInfo configInfo{};
 
@@ -164,6 +168,7 @@ namespace rtrx {
 		configInfo.multisampleInfo.pSampleMask = nullptr;			  // Optional
 		configInfo.multisampleInfo.alphaToCoverageEnable = VK_FALSE;  // Optional
 		configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;		  // Optional
+		configInfo.multisampleInfo.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
 
 		// Colour blending settings
 		configInfo.colourBlendAttachment.colorWriteMask =
