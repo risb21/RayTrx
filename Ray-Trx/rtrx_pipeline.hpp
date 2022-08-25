@@ -30,7 +30,7 @@ namespace rtrx {
 						 const std::string& vertfilepath,
 						 const std::string& fragfilepath,
 						 const PipelineConfigInfo& configInfo);
-			~rtrxPipeline() {};
+			~rtrxPipeline();
 
 			rtrxPipeline(const rtrxPipeline&) = delete;
 			void operator=(const rtrxPipeline&) = delete;
