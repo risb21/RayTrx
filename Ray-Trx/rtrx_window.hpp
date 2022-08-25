@@ -12,10 +12,12 @@ namespace rtrx {
 			rtrxWindow(int w, int h, std::string n);
 			~rtrxWindow();
 
-			// rtrxWindow(const rtrxWindow &) = delete;
-			// rtrxWindow &operator=(const rtrxWindow &) = delete;
+			rtrxWindow(const rtrxWindow &) = delete;
+			rtrxWindow &operator=(const rtrxWindow &) = delete;
 
 			bool shouldClose() { return glfwWindowShouldClose(window); }
+			VkExtent2D getExtent() { return { static_cast<uint32_t>(width), static_cast<uint32_t>(height) }; };
+
 			void createWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
 
 		private:

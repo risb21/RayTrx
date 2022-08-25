@@ -42,6 +42,9 @@
     <ClCompile Include="rtrx_device.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rtrx_swap_chain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balls.hpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="rtrx_device.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rtrx_swap_chain.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
