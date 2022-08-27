@@ -14,8 +14,8 @@ namespace rtrx {
 		VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
 		VkPipelineRasterizationStateCreateInfo rasterizationInfo;
 		VkPipelineMultisampleStateCreateInfo multisampleInfo;
-		VkPipelineColorBlendAttachmentState colourBlendAttachment;
-		VkPipelineColorBlendStateCreateInfo colourBlendInfo;
+		//VkPipelineColorBlendAttachmentState colourBlendAttachment;
+		//VkPipelineColorBlendStateCreateInfo colourBlendInfo;
 		VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
 		VkPipelineLayout pipelineLayout = nullptr;
 		VkRenderPass renderpass = nullptr;

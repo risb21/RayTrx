@@ -80,13 +80,37 @@ namespace rtrx {
 		vertexInputInfo.pVertexAttributeDescriptions = nullptr;
 		vertexInputInfo.pVertexBindingDescriptions = nullptr;
 
-		// Assigning info on viewport defined before
+		// Assigning info on viewport
 		VkPipelineViewportStateCreateInfo viewportInfo{};
 		viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
 		viewportInfo.viewportCount = 1;
 		viewportInfo.pViewports = &configInfo.viewport;
 		viewportInfo.scissorCount = 1;
 		viewportInfo.pScissors = &configInfo.scissor;
+
+		// does this work for colour blending
+		VkPipelineColorBlendAttachmentState  colourBlendAttachment{};
+		colourBlendAttachment.colorWriteMask =
+			VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT |
+			VK_COLOR_COMPONENT_A_BIT;
+		colourBlendAttachment.blendEnable = VK_FALSE;
+		colourBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_ONE;     // Optional  
+		colourBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;	// Optional
+		colourBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;                // Optional
+		colourBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;		// Optional
+		colourBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;	// Optional
+		colourBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;				// Optional
+
+		VkPipelineColorBlendStateCreateInfo colourBlendInfo{};
+		colourBlendInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+		colourBlendInfo.logicOpEnable = VK_FALSE;
+		colourBlendInfo.logicOp = VK_LOGIC_OP_COPY;	  // Optional
+		colourBlendInfo.attachmentCount = 1;
+		colourBlendInfo.pAttachments = &colourBlendAttachment;
+		colourBlendInfo.blendConstants[0] = 0.0f;	  // Optional
+		colourBlendInfo.blendConstants[1] = 0.0f;	  // Optional
+		colourBlendInfo.blendConstants[2] = 0.0f;	  // Optional
+		colourBlendInfo.blendConstants[3] = 0.0f;	  // Optional
 
 		VkGraphicsPipelineCreateInfo pipelineInfo{};
 		pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -97,7 +121,8 @@ namespace rtrx {
 		pipelineInfo.pViewportState = &viewportInfo;
 		pipelineInfo.pRasterizationState = &configInfo.rasterizationInfo;
 		pipelineInfo.pMultisampleState = &configInfo.multisampleInfo;
-		pipelineInfo.pColorBlendState = &configInfo.colourBlendInfo;
+		// pipelineInfo.pColorBlendState = &configInfo.colourBlendInfo;
+		pipelineInfo.pColorBlendState = &colourBlendInfo;
 		pipelineInfo.pDepthStencilState = &configInfo.depthStencilInfo;
 		pipelineInfo.pDynamicState = nullptr;
 		
@@ -170,28 +195,28 @@ namespace rtrx {
 		configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;		  // Optional
 		configInfo.multisampleInfo.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
 
-		// Colour blending settings
-		configInfo.colourBlendAttachment.colorWriteMask =
-			VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT |
-			VK_COLOR_COMPONENT_A_BIT;
-		configInfo.colourBlendAttachment.blendEnable = VK_FALSE;
-		configInfo.colourBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_ONE;     // Optional  
-		configInfo.colourBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;	// Optional
-		configInfo.colourBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;				// Optional
-		configInfo.colourBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;		// Optional
-		configInfo.colourBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;	// Optional
-		configInfo.colourBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;				// Optional
+		//// Colour blending settings
+		//configInfo.colourBlendAttachment.colorWriteMask =
+		//	VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT |
+		//	VK_COLOR_COMPONENT_A_BIT;
+		//configInfo.colourBlendAttachment.blendEnable = VK_FALSE;
+		//configInfo.colourBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_ONE;     // Optional  
+		//configInfo.colourBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;	// Optional
+		//configInfo.colourBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;                // Optional
+		//configInfo.colourBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;		// Optional
+		//configInfo.colourBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;	// Optional
+		//configInfo.colourBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;				// Optional
 		
 		// Assigning blending settings attachment
-		configInfo.colourBlendInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
-		configInfo.colourBlendInfo.logicOpEnable = VK_FALSE;
-		configInfo.colourBlendInfo.logicOp = VK_LOGIC_OP_COPY;	  // Optional
-		configInfo.colourBlendInfo.attachmentCount = 1;
-		configInfo.colourBlendInfo.pAttachments = &configInfo.colourBlendAttachment;
-		configInfo.colourBlendInfo.blendConstants[0] = 0.0f;	  // Optional
-		configInfo.colourBlendInfo.blendConstants[1] = 0.0f;	  // Optional
-		configInfo.colourBlendInfo.blendConstants[2] = 0.0f;	  // Optional
-		configInfo.colourBlendInfo.blendConstants[3] = 0.0f;	  // Optional
+		//configInfo.colourBlendInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+		//configInfo.colourBlendInfo.logicOpEnable = VK_FALSE;
+		//configInfo.colourBlendInfo.logicOp = VK_LOGIC_OP_COPY;	  // Optional
+		//configInfo.colourBlendInfo.attachmentCount = 1;
+		//configInfo.colourBlendInfo.pAttachments = &configInfo.colourBlendAttachment;
+		//configInfo.colourBlendInfo.blendConstants[0] = 0.0f;	  // Optional
+		//configInfo.colourBlendInfo.blendConstants[1] = 0.0f;	  // Optional
+		//configInfo.colourBlendInfo.blendConstants[2] = 0.0f;	  // Optional
+		//configInfo.colourBlendInfo.blendConstants[3] = 0.0f;	  // Optional
 
 		// Depth buffer info
 		configInfo.depthStencilInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
