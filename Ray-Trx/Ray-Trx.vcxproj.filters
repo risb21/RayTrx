@@ -36,7 +36,7 @@
     <ClCompile Include="balls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rtx_pipeline.cpp">
+    <ClCompile Include="rtrx_pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="rtrx_device.cpp">

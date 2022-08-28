@@ -66,7 +66,7 @@ namespace rtrx {
 		shaderStages[0].pNext = nullptr;
 		shaderStages[0].pSpecializationInfo = nullptr;
 		shaderStages[1].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-		shaderStages[1].stage = VK_SHADER_STAGE_VERTEX_BIT;
+		shaderStages[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
 		shaderStages[1].module = fragShaderModule;
 		shaderStages[1].pName = "main";
 		shaderStages[1].flags = 0;

@@ -24,7 +24,7 @@
     <ClCompile Include="rtrx_device.cpp" />
     <ClCompile Include="rtrx_window.cpp" />
     <ClCompile Include="rtrx_window.hpp" />
-    <ClCompile Include="rtx_pipeline.cpp" />
+    <ClCompile Include="rtrx_pipeline.cpp" />
     <ClCompile Include="tracer.cpp" />
     <ClCompile Include="tracer.hpp" />
     <ClCompile Include="balls.cpp" />

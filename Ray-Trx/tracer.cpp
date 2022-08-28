@@ -19,6 +19,8 @@ namespace rtrx {
 			glfwPollEvents(); // keystrokes, clicking X button etc
 			drawFrame();
 		}
+
+		vkDeviceWaitIdle(rtrxDev.device());
 	}
 
 	void Tracer::createPipelineLayout() {
