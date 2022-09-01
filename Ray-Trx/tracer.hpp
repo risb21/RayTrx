@@ -4,6 +4,7 @@
 #include "rtrx_pipeline.hpp"
 #include "rtrx_swap_chain.hpp"
 #include "rtrx_device.hpp"
+#include "rtrx_model.hpp"
 
 // std
 #include <memory>
@@ -24,6 +25,7 @@ namespace rtrx {
 			void run();
 
 		private:
+			void loadModels();
 			void createPipelineLayout();
 			void createPipeline();
 			void createCommandBuffers();
@@ -40,5 +42,6 @@ namespace rtrx {
 			std::unique_ptr<rtrxPipeline> RtrxPipeline;
 			VkPipelineLayout pipelineLayout;
 			std::vector<VkCommandBuffer> commandBuffers;
+			std::unique_ptr<rtrxModel> RtrxModel;
 	};
 }

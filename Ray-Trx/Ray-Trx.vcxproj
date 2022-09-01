@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="rtrx_model.cpp" />
     <ClCompile Include="rtrx_swap_chain.cpp" />
     <ClCompile Include="rtrx_device.cpp" />
     <ClCompile Include="rtrx_window.cpp" />
@@ -31,10 +32,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balls.hpp" />
+    <ClInclude Include="rtrx_model.hpp" />
     <ClInclude Include="rtrx_swap_chain.hpp" />
     <ClInclude Include="rtrx_device.hpp" />
     <ClInclude Include="rtrx_pipeline.hpp" />
   </ItemGroup>
+  <ItemDefinitionGroup>
+    <CustomBuildStep>
+      <Message>Does this even work</Message>
+      <Command>$(ProjectDir)compile.bat</Command>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="compile.bat" />
     <None Include="simple_shader.frag" />
@@ -73,6 +81,10 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

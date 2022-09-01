@@ -7,6 +7,7 @@
 namespace rtrx {
 	
 	Tracer::Tracer() {
+		loadModels();
 		createPipelineLayout();
 		createPipeline();
 		createCommandBuffers();
@@ -21,6 +22,16 @@ namespace rtrx {
 		}
 
 		vkDeviceWaitIdle(rtrxDev.device());
+	}
+
+	void Tracer::loadModels() {
+		std::vector<rtrxModel::Vertex> vertices{
+			{{0.0f, -0.5f}},
+			{{0.5f, 0.5f}},
+			{{-0.5f, 0.5f}}
+		};
+
+		RtrxModel = std::make_unique<rtrxModel>(rtrxDev, vertices);
 	}
 
 	void Tracer::createPipelineLayout() {
@@ -87,7 +98,8 @@ namespace rtrx {
 			vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
 			RtrxPipeline->bind(commandBuffers[i]);
-			vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+			RtrxModel->bind(commandBuffers[i]);
+			RtrxModel->draw(commandBuffers[i]);
 
 			vkCmdEndRenderPass(commandBuffers[i]);
 			if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {
