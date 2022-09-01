@@ -24,12 +24,35 @@ namespace rtrx {
 		vkDeviceWaitIdle(rtrxDev.device());
 	}
 
+	void Tracer::Sierpinski(std::vector<rtrxModel::Vertex>& verts,
+		int depth,
+		glm::vec2 left,
+		glm::vec2 right,
+		glm::vec2 top) {
+		if (depth <= 0) {
+			verts.push_back({ top });
+			verts.push_back({ right });
+			verts.push_back({ left });
+		} else {
+			auto leftTop = 0.5f * (left + top);
+			auto rightTop = 0.5f * (right + top);
+			auto leftRight = 0.5f * (left + right);
+			Sierpinski(verts, depth - 1, left, leftRight, leftTop); // Bottom left triangle recursively
+			Sierpinski(verts, depth - 1, leftRight, right, rightTop); // Bottom right triangle recursively
+			Sierpinski(verts, depth - 1, leftTop, rightTop, top); // Top triangle recursively
+		}
+	}
+
 	void Tracer::loadModels() {
-		std::vector<rtrxModel::Vertex> vertices{
-			{{0.0f, -0.5f}},
-			{{0.5f, 0.5f}},
-			{{-0.5f, 0.5f}}
-		};
+		std::vector<rtrxModel::Vertex> vertices{};
+
+		Sierpinski(vertices, 10, { 0.0f, -0.5f }, { 0.5f, 0.5f }, { -0.5f, 0.5f });
+
+		//std::vector<rtrxModel::Vertex> vertices{
+		//	{{0.0f, -0.5f}},
+		//	{{0.5f, 0.5f}},
+		//	{{-0.5f, 0.5f}}
+		//};
 
 		RtrxModel = std::make_unique<rtrxModel>(rtrxDev, vertices);
 	}

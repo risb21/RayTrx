@@ -25,6 +25,11 @@ namespace rtrx {
 			void run();
 
 		private:
+			void Sierpinski(std::vector<rtrxModel::Vertex> &verts,
+				int depth,
+				glm::vec2 left,
+				glm::vec2 right,
+				glm::vec2 top);
 			void loadModels();
 			void createPipelineLayout();
 			void createPipeline();
