@@ -44,15 +44,15 @@ namespace rtrx {
 	}
 
 	void Tracer::loadModels() {
-		std::vector<rtrxModel::Vertex> vertices{};
 
-		Sierpinski(vertices, 10, { 0.0f, -0.5f }, { 0.5f, 0.5f }, { -0.5f, 0.5f });
+		// std::vector<rtrxModel::Vertex> vertices{};
 
-		//std::vector<rtrxModel::Vertex> vertices{
-		//	{{0.0f, -0.5f}},
-		//	{{0.5f, 0.5f}},
-		//	{{-0.5f, 0.5f}}
-		//};
+		// Sierpinski(vertices, 10, { 0.0f, -0.5f }, { 0.5f, 0.5f }, { -0.5f, 0.5f });
+
+		std::vector<rtrxModel::Vertex> vertices{
+			{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+			{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+			{{-0.4f, 0.4f}, {0.0f, 0.0f, 1.0f}} };
 
 		RtrxModel = std::make_unique<rtrxModel>(rtrxDev, vertices);
 	}

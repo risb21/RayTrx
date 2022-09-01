@@ -16,6 +16,7 @@ namespace rtrx {
 
 			struct Vertex {
 				glm::vec2 position;
+				glm::vec3 colour; // interleaving colour bind in buffer
 				static std::vector<VkVertexInputBindingDescription> getBindingDescriptions();
 				static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
 			};
