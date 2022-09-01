@@ -19,17 +19,27 @@ namespace rtrx{
 		glfwInit();  // Initializes glfw
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		// ^ Stops glfw from creating an OpenGL ctx, from GLFW_NO_API
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		// ^ Stops resizing of window
 
 		// window ptr defined in .hpp file of same name
 		window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
 		// nullptr for windowed mode, name of window needs c style string
+		glfwSetWindowUserPointer(window, this);
+		glfwSetFramebufferSizeCallback(window, framebufferResizedCallback);
+
 	}
 
 	void rtrxWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR* surface) {
 		if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
 			throw std::runtime_error("Failed to create window surface");
 		}
+	}
+
+	void rtrxWindow::framebufferResizedCallback(GLFWwindow* window, int width, int height) {
+		auto rtrxWin = reinterpret_cast<rtrxWindow *> (glfwGetWindowUserPointer(window));
+		rtrxWin -> framebufferResized = true;
+		rtrxWin -> width = width;
+		rtrxWin -> height = height;
 	}
 }

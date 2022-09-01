@@ -8,18 +8,20 @@
 // std lib headers
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace rtrx {
 
     class rtrxSwapChain {
         public:
             static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
-
             rtrxSwapChain(rtrxDevice &deviceRef, VkExtent2D windowExtent);
+            rtrxSwapChain(rtrxDevice &deviceRef, VkExtent2D windowExtent, std::shared_ptr<rtrxSwapChain> previous);
             ~rtrxSwapChain();
 
             rtrxSwapChain(const rtrxSwapChain &) = delete;
-            void operator=(const rtrxSwapChain &) = delete;
+            rtrxSwapChain& operator=(const rtrxSwapChain &) = delete;
+            // rtrxSwapChain() = default;
 
             VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
             VkRenderPass getRenderPass() { return renderPass; }
@@ -39,6 +41,7 @@ namespace rtrx {
             VkResult submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex);
 
         private:
+            void init();
             void createSwapChain();
             void createImageViews();
             void createDepthResources();
@@ -69,6 +72,7 @@ namespace rtrx {
             VkExtent2D windowExtent;
 
             VkSwapchainKHR swapChain;
+            std::shared_ptr<rtrxSwapChain> oldSwapChain;
 
             std::vector<VkSemaphore> imageAvailableSemaphores;
             std::vector<VkSemaphore> renderFinishedSemaphores;

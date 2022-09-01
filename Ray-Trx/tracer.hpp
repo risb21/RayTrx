@@ -34,16 +34,15 @@ namespace rtrx {
 			void createPipelineLayout();
 			void createPipeline();
 			void createCommandBuffers();
+			void freeCommandBuffers();
 			void drawFrame();
+			void recreateSwapChain();
+			void recordCommandBuffer(int imageIndex);
 
 
 			rtrxWindow rtrxWindow{ WIDTH, HEIGHT, "Hello how r u i am under d wotor it is too much raining" };
 			rtrxDevice rtrxDev{ rtrxWindow };
-			rtrxSwapChain rtrxSwapChain{ rtrxDev, rtrxWindow.getExtent() };
-			/*rtrxPipeline rtrxPipeline{ rtrxDev, 
-									   "simple_shader.vert.spv", 
-									   "simple_shader.frag.spv",
-									   rtrxPipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};*/
+			std::unique_ptr<rtrxSwapChain> RtrxSwapChain;
 			std::unique_ptr<rtrxPipeline> RtrxPipeline;
 			VkPipelineLayout pipelineLayout;
 			std::vector<VkCommandBuffer> commandBuffers;

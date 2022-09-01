@@ -35,7 +35,7 @@ namespace rtrx {
 
             // Not copyable or movable
             rtrxDevice(const rtrxDevice &) = delete;
-            void operator=(const rtrxDevice &) = delete;
+            rtrxDevice& operator=(const rtrxDevice&) = delete;
             rtrxDevice(rtrxDevice &&) = delete;
             rtrxDevice &operator=(rtrxDevice &&) = delete;
 
