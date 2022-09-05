@@ -32,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balls.hpp" />
+    <ClInclude Include="rtrx_object.hpp" />
     <ClInclude Include="rtrx_model.hpp" />
     <ClInclude Include="rtrx_swap_chain.hpp" />
     <ClInclude Include="rtrx_device.hpp" />

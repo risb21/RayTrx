@@ -4,6 +4,7 @@
 #define	GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 
 // std
 #include <iostream>
@@ -14,13 +15,14 @@
 namespace rtrx {
 
 	struct SimplePushConstantData {
+		glm::mat2 transform{1.f};
 		glm::vec2 offset;
 		alignas(16) glm::vec3 colour;
 	};
 
 	
 	Tracer::Tracer() {
-		loadModels();
+		loadObjects();
 		createPipelineLayout();
 		recreateSwapChain();
 		createCommandBuffers();
@@ -56,7 +58,7 @@ namespace rtrx {
 		}
 	}
 
-	void Tracer::loadModels() {
+	void Tracer::loadObjects() {
 
 		 // std::vector<rtrxModel::Vertex> vertices{};
 		    
@@ -67,7 +69,15 @@ namespace rtrx {
 			{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
 			{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}} };
 
-		RtrxModel = std::make_unique<rtrxModel>(rtrxDev, vertices);
+		auto RtrxModel = std::make_shared<rtrxModel>(rtrxDev, vertices);
+		auto triangle = rtrxObject::createObject();
+		triangle.model = RtrxModel;
+		triangle.colour = { .1f, .8f, .1f };
+		triangle.transform2d.translation.x = 0.2f;
+		triangle.transform2d.scale = { 2.f, .5f };
+		triangle.transform2d.rotation = .25f * glm::two_pi<float>(); // opposite rotation because y-axis flipped in vulkan
+
+		Objects.push_back(std::move(triangle));
 	}
 
 	void Tracer::createPipelineLayout() {
@@ -183,10 +193,6 @@ namespace rtrx {
 
 	void Tracer::recordCommandBuffer(int imageIndex) {
 
-		static int frame = 0;
-		static int len = 360;
-		frame = (frame + 1) % len;
-
 		VkCommandBufferBeginInfo beginInfo{};
 		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
@@ -221,27 +227,7 @@ namespace rtrx {
 		vkCmdSetViewport(commandBuffers[imageIndex], 0, 1, &viewport);
 		vkCmdSetScissor(commandBuffers[imageIndex], 0, 1, &scissor);
 
-		RtrxPipeline->bind(commandBuffers[imageIndex]);
-		RtrxModel->bind(commandBuffers[imageIndex]);
-
-		SimplePushConstantData push{};
-		push.offset = { 0.0f, 0.0f };
-		float pi = 3.141592;
-		float radians = static_cast<float> ((frame % 121) * 2 * pi / 360);
-		if (frame < len / 3 + 1) {
-			push.colour = { 0.0f + sin(3*radians/4), 0.0f, 1.0f - sin(3*radians/4)};
-		} else if (frame < len * 2 / 3 + 1) {
-			push.colour = { 1.0f - sin(3*radians/4), 0.0f + sin(3*radians/4), 0.0f };
-		} else {
-			push.colour = { 0.0f, 1.0f - sin(3*radians/4), 0.0f + sin(3*radians/4) };
-		}
-
-		vkCmdPushConstants(commandBuffers[imageIndex],
-			pipelineLayout,
-			VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
-			0, sizeof(SimplePushConstantData),
-			&push);
-		RtrxModel->draw(commandBuffers[imageIndex]);
+		renderObjects(commandBuffers[imageIndex]);
 
 		//for (int j = 0; j < 4; j++) {
 		//	SimplePushConstantData push{};
@@ -256,11 +242,31 @@ namespace rtrx {
 		//	RtrxModel->draw(commandBuffers[imageIndex]);
 		//}
 
-
 		vkCmdEndRenderPass(commandBuffers[imageIndex]);
 		if (vkEndCommandBuffer(commandBuffers[imageIndex]) != VK_SUCCESS) {
 			throw std::runtime_error("Failed to record command buffer");
 		}
+	}
+
+	void Tracer::renderObjects(VkCommandBuffer commandBuffer) {
+
+		RtrxPipeline -> bind(commandBuffer);
+
+		for (auto& obj : Objects) {
+			SimplePushConstantData push{};
+			push.offset = obj.transform2d.translation;
+			push.colour = obj.colour;
+			push.transform = obj.transform2d.mat2();
+
+			vkCmdPushConstants(commandBuffer,
+				pipelineLayout,
+				VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+				0, sizeof(SimplePushConstantData),
+				&push);
+			obj.model -> bind(commandBuffer);
+			obj.model -> draw(commandBuffer);
+		}
+
 	}
 
 	void Tracer::drawFrame() {

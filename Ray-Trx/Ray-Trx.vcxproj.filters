@@ -65,6 +65,9 @@
     <ClInclude Include="rtrx_model.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="rtrx_object.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="simple_shader.vert">

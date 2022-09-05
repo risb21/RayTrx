@@ -5,6 +5,7 @@
 #include "rtrx_swap_chain.hpp"
 #include "rtrx_device.hpp"
 #include "rtrx_model.hpp"
+#include "rtrx_object.hpp"
 
 // std
 #include <memory>
@@ -30,7 +31,7 @@ namespace rtrx {
 				glm::vec2 left,
 				glm::vec2 right,
 				glm::vec2 top);
-			void loadModels();
+			void loadObjects();
 			void createPipelineLayout();
 			void createPipeline();
 			void createCommandBuffers();
@@ -38,6 +39,7 @@ namespace rtrx {
 			void drawFrame();
 			void recreateSwapChain();
 			void recordCommandBuffer(int imageIndex);
+			void renderObjects(VkCommandBuffer commandBuffer);
 
 
 			rtrxWindow rtrxWindow{ WIDTH, HEIGHT, "Hello how r u i am under d wotor it is too much raining" };
@@ -46,6 +48,6 @@ namespace rtrx {
 			std::unique_ptr<rtrxPipeline> RtrxPipeline;
 			VkPipelineLayout pipelineLayout;
 			std::vector<VkCommandBuffer> commandBuffers;
-			std::unique_ptr<rtrxModel> RtrxModel;
+			std::vector<rtrxObject> Objects;
 	};
 }
