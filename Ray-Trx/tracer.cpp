@@ -1,10 +1,23 @@
 #include "tracer.hpp"
 
+// libs
+#define	GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#include <glm/glm.hpp>
+
 // std
+#include <iostream>
 #include <stdexcept>
 #include <array>
+#include <cmath>
 
 namespace rtrx {
+
+	struct SimplePushConstantData {
+		glm::vec2 offset;
+		alignas(16) glm::vec3 colour;
+	};
+
 	
 	Tracer::Tracer() {
 		loadModels();
@@ -58,12 +71,18 @@ namespace rtrx {
 	}
 
 	void Tracer::createPipelineLayout() {
+
+		VkPushConstantRange pushConstantRange{};
+		pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+		pushConstantRange.offset = 0;
+		pushConstantRange.size = sizeof(SimplePushConstantData);
+
 		VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
 		pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 		pipelineLayoutInfo.setLayoutCount = 0;
 		pipelineLayoutInfo.pSetLayouts = nullptr;
-		pipelineLayoutInfo.pushConstantRangeCount = 0;
-		pipelineLayoutInfo.pPushConstantRanges = nullptr;
+		pipelineLayoutInfo.pushConstantRangeCount = 1;
+		pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
 		if (vkCreatePipelineLayout(rtrxDev.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
 			VK_SUCCESS) {
 			throw std::runtime_error("Failed to create pipeline layout");
@@ -163,6 +182,11 @@ namespace rtrx {
 	}
 
 	void Tracer::recordCommandBuffer(int imageIndex) {
+
+		static int frame = 0;
+		static int len = 360;
+		frame = (frame + 1) % len;
+
 		VkCommandBufferBeginInfo beginInfo{};
 		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
@@ -179,8 +203,8 @@ namespace rtrx {
 		renderPassInfo.renderArea.extent = RtrxSwapChain->getSwapChainExtent();
 
 		std::array<VkClearValue, 2> clearValues{};
-		clearValues[0].color = { 0.1f, 0.1f, 0.1f, 1.0f };
-		clearValues[1].depthStencil = { 10.f, 0 };
+		clearValues[0].color = { 0.01f, 0.01f, 0.01f, 1.0f };
+		clearValues[1].depthStencil = { 1.0f, 0 };
 		renderPassInfo.clearValueCount = static_cast<uint32_t> (clearValues.size());
 		renderPassInfo.pClearValues = clearValues.data();
 
@@ -199,7 +223,39 @@ namespace rtrx {
 
 		RtrxPipeline->bind(commandBuffers[imageIndex]);
 		RtrxModel->bind(commandBuffers[imageIndex]);
+
+		SimplePushConstantData push{};
+		push.offset = { 0.0f, 0.0f };
+		float pi = 3.141592;
+		float radians = static_cast<float> ((frame % 121) * 2 * pi / 360);
+		if (frame < len / 3 + 1) {
+			push.colour = { 0.0f + sin(3*radians/4), 0.0f, 1.0f - sin(3*radians/4)};
+		} else if (frame < len * 2 / 3 + 1) {
+			push.colour = { 1.0f - sin(3*radians/4), 0.0f + sin(3*radians/4), 0.0f };
+		} else {
+			push.colour = { 0.0f, 1.0f - sin(3*radians/4), 0.0f + sin(3*radians/4) };
+		}
+
+		vkCmdPushConstants(commandBuffers[imageIndex],
+			pipelineLayout,
+			VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+			0, sizeof(SimplePushConstantData),
+			&push);
 		RtrxModel->draw(commandBuffers[imageIndex]);
+
+		//for (int j = 0; j < 4; j++) {
+		//	SimplePushConstantData push{};
+		//	push.offset = { -0.5f + frame * 0.008f, -0.4f + j * 0.25f };
+		//	push.colour = { 0.0f + frame * 0.009f, 0.1f + frame * 0.008f, 0.2f + 0.2f * j - frame * 0.002f};
+
+		//	vkCmdPushConstants(commandBuffers[imageIndex],
+		//		pipelineLayout,
+		//		VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+		//		0, sizeof(SimplePushConstantData),
+		//		&push);
+		//	RtrxModel->draw(commandBuffers[imageIndex]);
+		//}
+
 
 		vkCmdEndRenderPass(commandBuffers[imageIndex]);
 		if (vkEndCommandBuffer(commandBuffers[imageIndex]) != VK_SUCCESS) {
